@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import HomeSignUp from "../pages/home/HomeSignUp";
 import SignInSide from "../pages/auth/SignInSide";
 import SignUpSide from "../pages/auth/SignUpSign";
@@ -17,6 +17,7 @@ export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/home/*" element={<Home />} />
         <Route path="/signin" element={<SignInSide />} />
         <Route path="/signup" element={<SignUpSide />} />
@@ -29,7 +30,6 @@ export default function AppRouter() {
         <Route path="/dashboard/role/*" element={<Role />} />
         <Route path="/dashboard/permission/*" element={<Permission />} />
         <Route path="/dashboard/company/*" element={<Company />} />
-        
       </Routes>
     </BrowserRouter>
   );

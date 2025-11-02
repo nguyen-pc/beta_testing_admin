@@ -471,3 +471,26 @@ export async function callSendEmailAccount(data: any) {
     data
   );
 }
+
+// analysis
+
+export async function callGetDashboardStats() {
+  console.log("callGetDashboardStats");
+  return axios.get<IBackendRes<any>>(
+    `/api/v1/admin/stats/overview`
+  );
+}
+
+export async function callGetTop10User() {
+  console.log("callGetTop10User");
+  return axios.get<IBackendRes<IUser[]>>(
+    `/api/v1/users/latest`
+  );
+}
+
+export async function callGetTop10Company() {
+  console.log("callGetTop10Company");
+  return axios.get<IBackendRes<any[]>>(
+    `/api/v1/company/latest`
+  );
+}

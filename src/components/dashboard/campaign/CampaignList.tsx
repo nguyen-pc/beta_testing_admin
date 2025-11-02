@@ -112,7 +112,7 @@ export default function AllCampaignList() {
   }, [statusFilter]);
 
   const handleDetailClick = (campaignId: number) => {
-      navigate(`/dashboard/projects/${campaignId}/detail`);
+    navigate(`/dashboard/projects/${campaignId}/detail`);
   };
 
   return (
@@ -138,7 +138,7 @@ export default function AllCampaignList() {
         <Grid container spacing={2}>
           {campaigns && campaigns.length > 0 ? (
             campaigns.map((campaign, index) => (
-              <Grid item xs={12} sm={6} md={4} key={campaign.id}>
+              <Grid item size={{ xs: 12, sm: 6, lg: 4 }} key={campaign.id}>
                 <StyledCard
                   onClick={() =>
                     handleDetailClick(campaign.id, campaign.campaignStatus)
@@ -150,8 +150,9 @@ export default function AllCampaignList() {
                     component="img"
                     alt={campaign.title}
                     image={
-                      campaign.image ||
-                      "https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=900&q=80"
+                      campaign?.bannerUrl
+                        ? `http://localhost:8081/storage/project-banners/${campaign.bannerUrl}`
+                        : "https://picsum.photos/800/450?random=2"
                     }
                     sx={{ height: 180, objectFit: "cover" }}
                   />
@@ -187,10 +188,10 @@ export default function AllCampaignList() {
                             : "default"
                         }
                       />
-                      {campaign.campaignTypeName && (
+                      {campaign.campaignType.name && (
                         <Chip
                           size="small"
-                          label={campaign.campaignTypeName}
+                          label={campaign.campaignType.name}
                           color="info"
                         />
                       )}

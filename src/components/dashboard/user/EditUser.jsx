@@ -43,10 +43,10 @@ const EditUser = ({ onSubmit }) => {
 
   const fetchCompanyData = async () => {
     try {
-      const res = await callFetchCompany("page=1&size=100");
-      console.log("Công ty đã tải:", res.data.result);
-      if (res && res.data && res.data.result) {
-        setCompanies(res.data.result);
+      const res = await callFetchCompany();
+      console.log("Công ty đã tải:", res.data);
+      if (res && res.data) {
+        setCompanies(res.data);
       }
     } catch (error) {
       console.error("Lỗi khi tải dữ liệu công ty:", error);
@@ -65,7 +65,6 @@ const EditUser = ({ onSubmit }) => {
     }
   };
 
-
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const handleFormSubmit = async (values) => {
@@ -74,14 +73,15 @@ const EditUser = ({ onSubmit }) => {
       const payload = {
         ...values,
         role: { id: values.role },
-        company: { id: values.company },
+        companyProfile: { id: values.company },
       };
       console.log("Submitting form with payload:", payload);
       const res = await callUpdateUser(payload);
+      console.log("Response from update user:", res);
       if (res && res.statusCode === 200) {
         console.log("User has been updated successfully:", res.data);
         // message.success("Cập nhật người dùng thành công");
-        navigate("/admin/userManagement");
+        navigate("/dashboard/user");
         // Ví dụ: thông báo thành công, redirect, ...
       } else {
         console.error("Failed to update user:", res.message);
@@ -111,16 +111,12 @@ const EditUser = ({ onSubmit }) => {
           gender: userData?.gender || "",
           // Lưu trữ dưới dạng id cho role và company
           role: userData?.role ? userData.role.id : "",
-          company: userData?.company ? userData.company.id : "",
+          company: userData?.companyProfile ? userData.companyProfile.id : "",
         }}
         enableReinitialize
         validationSchema={yup.object().shape({
           name: yup.string().required("Vui lòng nhập họ và tên"),
           gender: yup.string().required("Vui lòng chọn giới tính"),
-          age: yup
-            .number()
-            .required("Vui lòng nhập tuổi")
-            .min(0, "Tuổi không hợp lệ"),
           phoneNumber: yup
             .string()
             .matches(
@@ -128,7 +124,6 @@ const EditUser = ({ onSubmit }) => {
               "Số điện thoại không hợp lệ"
             ),
           address: yup.string().required("Vui lòng nhập địa chỉ"),
-          taxNumber: yup.string(),
         })}
       >
         {({
@@ -183,20 +178,6 @@ const EditUser = ({ onSubmit }) => {
               <TextField
                 fullWidth
                 variant="filled"
-                type="number"
-                label="Tuổi"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.age}
-                name="age"
-                error={!!touched.age && !!errors.age}
-                helperText={touched.age && errors.age}
-                sx={{ gridColumn: "span 2" }}
-              />
-
-              <TextField
-                fullWidth
-                variant="filled"
                 type="email"
                 label="Email"
                 value={values.email}
@@ -216,20 +197,6 @@ const EditUser = ({ onSubmit }) => {
                 name="phoneNumber"
                 error={!!touched.phoneNumber && !!errors.phoneNumber}
                 helperText={touched.phoneNumber && errors.phoneNumber}
-                sx={{ gridColumn: "span 2" }}
-              />
-
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Mã số thuế"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.taxNumber}
-                name="taxNumber"
-                error={!!touched.taxNumber && !!errors.taxNumber}
-                helperText={touched.taxNumber && errors.taxNumber}
                 sx={{ gridColumn: "span 2" }}
               />
 
@@ -278,7 +245,7 @@ const EditUser = ({ onSubmit }) => {
               >
                 {companies.map((company) => (
                   <MenuItem key={company.id} value={company.id}>
-                    {company.name}
+                    {company.companyName}
                   </MenuItem>
                 ))}
               </TextField>
@@ -302,10 +269,8 @@ const phoneRegExp =
 const userEditSchema = yup.object().shape({
   name: yup.string().required("Vui lòng nhập họ và tên"),
   gender: yup.string().required("Vui lòng chọn giới tính"),
-  age: yup.number().required("Vui lòng nhập tuổi").min(0, "Tuổi không hợp lệ"),
   phoneNumber: yup.string().matches(phoneRegExp, "Số điện thoại không hợp lệ"),
   address: yup.string().required("Vui lòng nhập địa chỉ"),
-  taxNumber: yup.string(),
 });
 
 export default EditUser;

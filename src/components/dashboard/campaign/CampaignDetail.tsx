@@ -26,6 +26,7 @@ import { callGetCampaign, callUpdateCampaignStatus } from "../../../config/api";
 import { useAppSelector } from "../../../redux/hooks";
 import UseCaseSection from "./UseCaseSection";
 import { formatChatTimeEmail } from "../../../util/timeFormatter";
+import parse from "html-react-parser";
 
 export default function CampaignDetailUser() {
   const { campaignId } = useParams();
@@ -43,6 +44,7 @@ export default function CampaignDetailUser() {
     setIsLoading(true);
     try {
       const res = await callGetCampaign(campaignId);
+      console.log("Fetched campaign:", res);
       setCampaign(res.data);
     } catch (err) {
       setError(err as Error);
@@ -121,45 +123,45 @@ export default function CampaignDetailUser() {
             paragraph
             sx={{ mb: 3 }}
           >
-            {campaign?.description || "Chưa có mô tả cho chiến dịch này."}
+            {parse(campaign?.description) ||
+              "Chưa có mô tả cho chiến dịch này."}
           </Typography>
 
           {/* ===== FORM CẬP NHẬT TRẠNG THÁI ===== */}
-          {user?.email === campaign?.createdBy && (
-            <Box
-              sx={{
-                display: "flex",
-                gap: 2,
-                alignItems: "center",
-                mb: 4,
-                backgroundColor: "#f5f5f5",
-                p: 2,
-                borderRadius: 2,
-              }}
-            >
-              <FormControl size="small" sx={{ minWidth: 180 }}>
-                <InputLabel>Trạng thái mới</InputLabel>
-                <Select
-                  value={newStatus}
-                  label="Trạng thái mới"
-                  onChange={(e) => setNewStatus(e.target.value)}
-                >
-                  <MenuItem value="PENDING">PENDING</MenuItem>
-                  <MenuItem value="APPROVED">APPROVED</MenuItem>
-                  <MenuItem value="REJECTED">REJECTED</MenuItem>
-                  {/* <MenuItem value="PUBLISHED">PUBLISHED</MenuItem> */}
-                </Select>
-              </FormControl>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleUpdateStatus}
-                disabled={updating}
+
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              alignItems: "center",
+              mb: 4,
+              backgroundColor: "#f5f5f5",
+              p: 2,
+              borderRadius: 2,
+            }}
+          >
+            <FormControl size="small" sx={{ minWidth: 180 }}>
+              <InputLabel>Trạng thái mới</InputLabel>
+              <Select
+                value={newStatus}
+                label="Trạng thái mới"
+                onChange={(e) => setNewStatus(e.target.value)}
               >
-                {updating ? "Đang cập nhật..." : "Cập nhật trạng thái"}
-              </Button>
-            </Box>
-          )}
+                <MenuItem value="PENDING">PENDING</MenuItem>
+                <MenuItem value="APPROVED">APPROVED</MenuItem>
+                <MenuItem value="REJECTED">REJECTED</MenuItem>
+                {/* <MenuItem value="PUBLISHED">PUBLISHED</MenuItem> */}
+              </Select>
+            </FormControl>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleUpdateStatus}
+              disabled={updating}
+            >
+              {updating ? "Đang cập nhật..." : "Cập nhật trạng thái"}
+            </Button>
+          </Box>
 
           {/* ===== THÔNG TIN CHIẾN DỊCH ===== */}
           <Box
@@ -181,7 +183,7 @@ export default function CampaignDetailUser() {
               Thông tin chiến dịch
             </Typography>
 
-            <Grid container spacing={2}>
+            <Grid container spacing={2} sx={{display:"flex", justifyContent:"space-between"}}>
               {/* Thời gian */}
               <Grid item xs={12} sm={6}>
                 <Box display="flex" alignItems="center" gap={1}>
@@ -234,14 +236,14 @@ export default function CampaignDetailUser() {
                   </Typography>
                 </Box>
                 <Typography variant="body2" color="text.secondary" ml={4}>
-                  {campaign?.rewardValue && campaign?.rewardType
-                    ? `${campaign.rewardValue} ${campaign.rewardType}`
+                  {campaign?.rewardValue
+                    ? `${campaign.rewardValue}$`
                     : "Chưa có phần thưởng"}
                 </Typography>
               </Grid>
 
               {/* Công khai */}
-              <Grid item xs={12} sm={6}>
+              {/* <Grid item xs={12} sm={6}>
                 <Box display="flex" alignItems="center" gap={1}>
                   {campaign?.isPublic ? (
                     <PublicIcon color="success" />
@@ -261,7 +263,7 @@ export default function CampaignDetailUser() {
                     ? "Riêng tư"
                     : "Chưa xác định"}
                 </Typography>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Box>
         </Grid>
@@ -270,7 +272,11 @@ export default function CampaignDetailUser() {
         <Grid item xs={12} md={6}>
           <Box
             component="img"
-            src="https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=900&q=80"
+            src={
+              campaign?.bannerUrl
+                ? `http://localhost:8081/storage/project-banners/${campaign.bannerUrl}`
+                : "https://picsum.photos/800/450?random=2"
+            }
             alt="Campaign Illustration"
             sx={{
               width: "100%",
@@ -301,7 +307,8 @@ export default function CampaignDetailUser() {
             Hướng dẫn sử dụng
           </Typography>
           <Typography variant="body1" color="text.secondary" paragraph>
-            {campaign?.instructions || "Chưa có hướng dẫn cho chiến dịch này."}
+            {parse(campaign?.instructions) ||
+              "Chưa có hướng dẫn cho chiến dịch này."}
           </Typography>
         </Box>
       </Grid>

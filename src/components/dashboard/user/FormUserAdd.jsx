@@ -3,9 +3,12 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useEffect, useState } from "react";
-import { callCreateUser, callFetchCompany, callFetchRole } from "../../../config/api";
+import {
+  callCreateUser,
+  callFetchCompany,
+  callFetchRole,
+} from "../../../config/api";
 import { useNavigate } from "react-router-dom";
-
 
 const FormUserAdd = () => {
   const [companies, setCompanies] = useState([]);
@@ -20,10 +23,10 @@ const FormUserAdd = () => {
 
   const fetchCompanyData = async () => {
     try {
-      const res = await callFetchCompany("page=1&size=100");
-      console.log("Công ty đã tải:", res.data.result);
-      if (res && res.data && res.data.result) {
-        setCompanies(res.data.result);
+      const res = await callFetchCompany();
+      console.log("Công ty đã tải:", res.data);
+      if (res && res.data) {
+        setCompanies(res.data);
       }
     } catch (error) {
       console.error("Lỗi khi tải dữ liệu công ty:", error);
@@ -48,14 +51,14 @@ const FormUserAdd = () => {
       const payload = {
         ...values,
         role: { id: values.role },
-        company: { id: values.company },
+        companyProfile: { id: values.company },
       };
       console.log("Submitting form with payload:", payload);
       const res = await callCreateUser(payload);
       if (res) {
         console.log("User has been updated successfully:", res.data);
         // message.success("Tạo người dùng thành công");
-        navigate("/admin/userManagement");
+        navigate("/dashboard/user");
       } else {
         console.error("Failed to update user:", res.message);
         // Ví dụ: hiển thị thông báo lỗi
@@ -129,20 +132,6 @@ const FormUserAdd = () => {
               <TextField
                 fullWidth
                 variant="filled"
-                type="number"
-                label="Tuổi"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.age}
-                name="age"
-                error={!!touched.age && !!errors.age}
-                helperText={touched.age && errors.age}
-                sx={{ gridColumn: "span 2" }}
-              />
-
-              <TextField
-                fullWidth
-                variant="filled"
                 type="email"
                 label="Email"
                 onBlur={handleBlur}
@@ -179,20 +168,6 @@ const FormUserAdd = () => {
                 name="phoneNumber"
                 error={!!touched.phoneNumber && !!errors.phoneNumber}
                 helperText={touched.phoneNumber && errors.phoneNumber}
-                sx={{ gridColumn: "span 2" }}
-              />
-
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Mã số thuế"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.taxNumber}
-                name="taxNumber"
-                error={!!touched.taxNumber && !!errors.taxNumber}
-                helperText={touched.taxNumber && errors.taxNumber}
                 sx={{ gridColumn: "span 2" }}
               />
 
@@ -239,7 +214,7 @@ const FormUserAdd = () => {
               >
                 {companies.map((company) => (
                   <MenuItem key={company.id} value={company.id}>
-                    {company.name}
+                    {company.companyName}
                   </MenuItem>
                 ))}
               </TextField>
@@ -263,7 +238,6 @@ const phoneRegExp =
 const userSchema = yup.object().shape({
   name: yup.string().required("Vui lòng nhập họ và tên"),
   gender: yup.string().required("Vui lòng chọn giới tính"),
-  age: yup.number().required("Vui lòng nhập tuổi").min(0, "Tuổi không hợp lệ"),
   email: yup
     .string()
     .email("Email không hợp lệ")
@@ -279,11 +253,9 @@ const userSchema = yup.object().shape({
 const initialValues = {
   name: "",
   gender: "",
-  age: "",
   email: "",
   password: "",
   phoneNumber: "",
-  taxNumber: "",
   address: "",
   role: {
     id: "",
