@@ -188,7 +188,7 @@ export default function AllCampaignList() {
                             : "default"
                         }
                       />
-                      {campaign.campaignType.name && (
+                      {campaign.campaignType?.name && (
                         <Chip
                           size="small"
                           label={campaign.campaignType.name}

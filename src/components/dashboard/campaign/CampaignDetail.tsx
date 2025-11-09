@@ -27,6 +27,10 @@ import { useAppSelector } from "../../../redux/hooks";
 import UseCaseSection from "./UseCaseSection";
 import { formatChatTimeEmail } from "../../../util/timeFormatter";
 import parse from "html-react-parser";
+import { extractLinksFromText } from "../../../util/extractLinks";
+import LinkSafetyChecker from "./LinkSafetyChecker";
+import ProjectDialog from "./ProjectDialog";
+import CompanyDialog from "./CompanyDialog";
 
 export default function CampaignDetailUser() {
   const { campaignId } = useParams();
@@ -38,7 +42,9 @@ export default function CampaignDetailUser() {
   const user = useAppSelector((state) => state.account.user);
   const navigate = useNavigate();
 
-  // 🧠 Lấy thông tin campaign
+  const [openProject, setOpenProject] = React.useState(false);
+  const [openCompany, setOpenCompany] = React.useState(false);
+
   const loadData = React.useCallback(async () => {
     setError(null);
     setIsLoading(true);
@@ -57,7 +63,6 @@ export default function CampaignDetailUser() {
     loadData();
   }, [loadData]);
 
-  // ⚙️ Hàm cập nhật trạng thái
   const handleUpdateStatus = async () => {
     if (!newStatus) {
       alert("⚠️ Vui lòng chọn trạng thái trước khi cập nhật!");
@@ -75,6 +80,12 @@ export default function CampaignDetailUser() {
       setUpdating(false);
     }
   };
+
+  const descriptionLinks = extractLinksFromText(campaign?.description || "");
+  const instructionLinks = extractLinksFromText(campaign?.instructions || "");
+  const allLinks = Array.from(
+    new Set([...descriptionLinks, ...instructionLinks])
+  );
 
   if (isLoading) {
     return (
@@ -96,7 +107,7 @@ export default function CampaignDetailUser() {
     <Container maxWidth="lg" sx={{ py: 8 }}>
       <Grid container spacing={6} alignItems="center">
         {/* ====== TRÁI ====== */}
-        <Grid item xs={12} md={6}>
+        <Grid item size={{ xs: 12, md: 12 }}>
           <Box display="flex" alignItems="center" gap={2} mb={2}>
             <Typography variant="h4" fontWeight="bold">
               {campaign?.title || "Tên chiến dịch"}
@@ -161,6 +172,23 @@ export default function CampaignDetailUser() {
             >
               {updating ? "Đang cập nhật..." : "Cập nhật trạng thái"}
             </Button>
+
+            <Box display="flex" gap={2}>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={() => setOpenProject(true)}
+              >
+                Xem Project
+              </Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={() => setOpenCompany(true)}
+              >
+                Xem Company
+              </Button>
+            </Box>
           </Box>
 
           {/* ===== THÔNG TIN CHIẾN DỊCH ===== */}
@@ -183,7 +211,11 @@ export default function CampaignDetailUser() {
               Thông tin chiến dịch
             </Typography>
 
-            <Grid container spacing={2} sx={{display:"flex", justifyContent:"space-between"}}>
+            <Grid
+              container
+              spacing={2}
+              sx={{ display: "flex", justifyContent: "space-between" }}
+            >
               {/* Thời gian */}
               <Grid item xs={12} sm={6}>
                 <Box display="flex" alignItems="center" gap={1}>
@@ -269,7 +301,7 @@ export default function CampaignDetailUser() {
         </Grid>
 
         {/* ====== PHẢI ====== */}
-        <Grid item xs={12} md={6}>
+        <Grid item size={{ xs: 12, md: 12 }}>
           <Box
             component="img"
             src={
@@ -313,8 +345,20 @@ export default function CampaignDetailUser() {
         </Box>
       </Grid>
 
+      <LinkSafetyChecker links={allLinks} />
       {/* ====== USE CASE SECTION ====== */}
       <UseCaseSection useCases={campaign?.useCases || []} />
+
+      <ProjectDialog
+        open={openProject}
+        onClose={() => setOpenProject(false)}
+        campaignId={campaignId!}
+      />
+      <CompanyDialog
+        open={openCompany}
+        onClose={() => setOpenCompany(false)}
+        campaignId={campaignId!}
+      />
     </Container>
   );
 }

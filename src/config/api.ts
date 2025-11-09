@@ -98,7 +98,6 @@ export const callResetPassword = (token: string, newPassword: string) => {
   );
 };
 
-
 // User
 export const callCreateUser = (user: IUser) => {
   return axios.post<IBackendRes<IUser>>("/api/v1/users", { ...user });
@@ -122,11 +121,8 @@ export const callFetchUserById = (id: string) => {
 };
 
 export const callFetchUserByCompanyId = (companyId: string) => {
-  return axios.get<IBackendRes<IUser[]>>(
-    `/api/v1/users/company/${companyId}`
-  );
-}
-
+  return axios.get<IBackendRes<IUser[]>>(`/api/v1/users/company/${companyId}`);
+};
 
 // Module permission
 
@@ -186,8 +182,6 @@ export const callFetchRole = (query: string) => {
   );
 };
 
-
-
 // Module Project
 
 export const callFetchAllProjects = (query: string) => {
@@ -242,9 +236,12 @@ export const callGetAllCampaigns = (query: string) => {
   return axios.get<IBackendRes<IModelPaginate<ICampaign>>>(
     `/api/v1/campaigns?${query}`
   );
-}
+};
 
-export const callUpdateCampaignStatus = (campaignId: string | number, status: string) => {
+export const callUpdateCampaignStatus = (
+  campaignId: string | number,
+  status: string
+) => {
   return axios.put(`/api/v1/campaign/${campaignId}/status?status=${status}`);
 };
 
@@ -422,75 +419,82 @@ export async function callGetCampaignByUser(userId: string) {
 
 export async function callFetchCompany() {
   console.log("callFetchCompany");
-  return axios.get<IBackendRes<any>>(
-    `/api/v1/company`
-  );
+  return axios.get<IBackendRes<any>>(`/api/v1/company`);
 }
 
 export async function callFetchCompanyById(id: string) {
   console.log("callFetchCompanyById", id);
-  return axios.get<IBackendRes<any>>(
-    `/api/v1/company/${id}`
-  );
+  return axios.get<IBackendRes<any>>(`/api/v1/company/${id}`);
 }
 
 export async function callCreateCompany(data: any) {
   console.log("callCreateCompany", data);
-  return axios.post<IBackendRes<any>>(
-    `/api/v1/company/create`,
-    data
-  );
+  return axios.post<IBackendRes<any>>(`/api/v1/company/create`, data);
 }
 
 export async function callUpdateCompany(id: string, data: any) {
   console.log("callUpdateCompany", { id, data });
-  return axios.put<IBackendRes<any>>(
-    `/api/v1/company/update/${id}`,
-    data
-  );
-} 
+  return axios.put<IBackendRes<any>>(`/api/v1/company/update/${id}`, data);
+}
 
 export async function callDeleteCompany(id: string) {
   console.log("callDeleteCompany", id);
-  return axios.delete<IBackendRes<any>>(
-    `/api/v1/company/delete/${id}`
-  );
+  return axios.delete<IBackendRes<any>>(`/api/v1/company/delete/${id}`);
 }
 
 export async function callSwitchStatusCompany(id: string) {
   console.log("callSwitchStatusCompany", id);
-  return axios.put<IBackendRes<any>>(
-    `/api/v1/company/switch-status/${id}`
-  );
+  return axios.put<IBackendRes<any>>(`/api/v1/company/switch-status/${id}`);
 }
 
 export async function callSendEmailAccount(data: any) {
   console.log("callSendEmailAccount", data);
-  return axios.post<IBackendRes<any>>(
-    `/api/v1/email/send-account-info`,
-    data
-  );
+  return axios.post<IBackendRes<any>>(`/api/v1/email/send-account-info`, data);
 }
 
 // analysis
 
 export async function callGetDashboardStats() {
   console.log("callGetDashboardStats");
-  return axios.get<IBackendRes<any>>(
-    `/api/v1/admin/stats/overview`
-  );
+  return axios.get<IBackendRes<any>>(`/api/v1/admin/stats/overview`);
 }
 
 export async function callGetTop10User() {
   console.log("callGetTop10User");
-  return axios.get<IBackendRes<IUser[]>>(
-    `/api/v1/users/latest`
-  );
+  return axios.get<IBackendRes<IUser[]>>(`/api/v1/users/latest`);
 }
 
 export async function callGetTop10Company() {
   console.log("callGetTop10Company");
-  return axios.get<IBackendRes<any[]>>(
-    `/api/v1/company/latest`
+  return axios.get<IBackendRes<any[]>>(`/api/v1/company/latest`);
+}
+
+//censor
+export async function callCheckLinkSafety(url: string) {
+  console.log("callCheckLinkSafety", url);
+  return axios.get<IBackendRes<any>>(`/api/v1/censor/check-link`, {
+    params: { url: url },
+  });
+}
+export async function callScanDownloadFile(fileUrl: string) {
+  console.log("callScanDownloadFile", fileUrl);
+  return axios.post<IBackendRes<any>>(`/api/v1/censor/scan-download`, {
+    params: { url: fileUrl },
+  });
+}
+
+export async function callGetProjectByCampaign(campaignId: string) {
+  console.log("callGetProjectByCampaign", campaignId);
+  return axios.get<IBackendRes<IProject>>(
+    `/api/v1/campaigns/${campaignId}/project`
   );
 }
+
+export async function callGetCompanyByCampaign(campaignId: string) {
+  console.log("callGetCompanyByCampaign", campaignId);
+  return axios.get<IBackendRes<ICompany>>(
+    `/api/v1/campaigns/${campaignId}/company`
+  );
+}
+
+
