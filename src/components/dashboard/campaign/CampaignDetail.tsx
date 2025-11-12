@@ -31,6 +31,8 @@ import { extractLinksFromText } from "../../../util/extractLinks";
 import LinkSafetyChecker from "./LinkSafetyChecker";
 import ProjectDialog from "./ProjectDialog";
 import CompanyDialog from "./CompanyDialog";
+import RejectReasonDialog from "./RejectReasonDialog";
+import RejectReasonList from "./RejectReasonList";
 
 export default function CampaignDetailUser() {
   const { campaignId } = useParams();
@@ -44,6 +46,7 @@ export default function CampaignDetailUser() {
 
   const [openProject, setOpenProject] = React.useState(false);
   const [openCompany, setOpenCompany] = React.useState(false);
+  const [openRejectDialog, setOpenRejectDialog] = React.useState(false);
 
   const loadData = React.useCallback(async () => {
     setError(null);
@@ -68,6 +71,12 @@ export default function CampaignDetailUser() {
       alert("⚠️ Vui lòng chọn trạng thái trước khi cập nhật!");
       return;
     }
+
+    if (newStatus === "REJECTED") {
+      setOpenRejectDialog(true);
+      return; // dừng lại, không gọi API cập nhật ngay
+    }
+
     try {
       setUpdating(true);
       const res = await callUpdateCampaignStatus(campaignId!, newStatus);
@@ -189,6 +198,10 @@ export default function CampaignDetailUser() {
                 Xem Company
               </Button>
             </Box>
+          </Box>
+
+          <Box sx={{ mt: 4 }}>
+            <RejectReasonList campaignId={campaignId!} />
           </Box>
 
           {/* ===== THÔNG TIN CHIẾN DỊCH ===== */}
@@ -358,6 +371,26 @@ export default function CampaignDetailUser() {
         open={openCompany}
         onClose={() => setOpenCompany(false)}
         campaignId={campaignId!}
+      />
+
+      <RejectReasonDialog
+        open={openRejectDialog}
+        onClose={() => setOpenRejectDialog(false)}
+        campaignId={campaignId!}
+        campaignTitle={campaign?.title}
+        createdBy={campaign?.createdBy}
+        onRejectSuccess={async () => {
+          try {
+            setUpdating(true);
+            const res = await callUpdateCampaignStatus(campaignId!, "REJECTED");
+            setCampaign(res.data);
+            alert("Chiến dịch đã bị từ chối!");
+          } catch (err) {
+            console.error("Lỗi khi cập nhật trạng thái:", err);
+          } finally {
+            setUpdating(false);
+          }
+        }}
       />
     </Container>
   );

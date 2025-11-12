@@ -497,4 +497,74 @@ export async function callGetCompanyByCampaign(campaignId: string) {
   );
 }
 
+export async function callCreateRejectReason(
+  campaignId: string,
+  reason: string
+) {
+  console.log("callCreateRejectReason", campaignId);
+  return axios.post<IBackendRes<any>>(
+    `/api/v1/campaigns/reject/${campaignId}`,
+    { reason } // gửi object JSON
+  );
+}
 
+export async function callGetRejectReasons(campaignId: string) {
+  console.log("callGetRejectReasons", campaignId);
+  return axios.get<IBackendRes<string[]>>(
+    `/api/v1/campaigns/reject/${campaignId}`
+  );
+}
+
+export async function callCreateMessageRejectReason(
+  reasonId: string,
+  senderId: string,
+  data: any
+) {
+  console.log("callCreateMessageRejectReason", reasonId);
+  return axios.post<IBackendRes<any>>(
+    `/api/v1/campaigns/reject/message/${reasonId}`,
+    data,
+    {
+      params: { senderId: senderId },
+    }
+  );
+}
+
+export async function callGetMessageRejectReasons(reasonId: string) {
+  console.log("callGetMessageRejectReasons", reasonId);
+  return axios.get<IBackendRes<any>>(
+    `/api/v1/campaigns/reject/message/${reasonId}`
+  );
+}
+
+export async function callGetUserByEmail(email: string) {
+  console.log("callGetUserByEmail", email);
+  return axios.get<IBackendRes<IUser>>(`/api/v1/users/email/${email}`);
+}
+
+// notification
+export const callFetchUserNotifications = (userId: string) => {
+  console.log("callFetchUserNotifications", { userId });
+  return axios.get<IBackendRes<Notification[]>>(
+    `/api/v1/notifications/${userId}`
+  );
+};
+
+export const callCreateNotification = (data: any) => {
+  console.log("callCreateNotification", { data });
+  return axios.post<IBackendRes<any>>(`/api/v1/notifications/create`, data);
+};
+
+export const callMarkNotificationAsRead = (notificationId: string) => {
+  console.log("callMarkNotificationAsRead", { notificationId });
+  return axios.put<IBackendRes<null>>(
+    `/api/v1/notifications/${notificationId}/read`
+  );
+};
+
+export const callDeleteNotification = (notificationId: string) => {
+  console.log("callDeleteNotification", { notificationId });
+  return axios.delete<IBackendRes<null>>(
+    `/api/v1/notifications/${notificationId}`
+  );
+};
