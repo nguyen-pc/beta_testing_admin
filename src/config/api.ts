@@ -568,3 +568,19 @@ export const callDeleteNotification = (notificationId: string) => {
     `/api/v1/notifications/${notificationId}`
   );
 };
+
+// setting user
+export async function callGetUserSettings(userId: string) {
+  console.log("callGetUserSettings", { userId });
+  return axios.get<IBackendRes<any>>(`/api/v1/users/${userId}`);
+}
+
+export async function callUpdateUserSettings(data: any) {
+  console.log("callUpdateUserSettings", { data });
+  return axios.put<IBackendRes<any>>(`/api/v1/users`, data);
+}
+
+export async function callChangeUserPassword(data: any) {
+  console.log("callChangeUserPassword", { data });
+  return axios.put<IBackendRes<any>>(`/api/v1/users/change-password`, data);
+}

@@ -12,6 +12,7 @@ import Role from "../pages/dashboard/Role";
 import Profile from "../pages/profile/Profile";
 import Permission from "../pages/dashboard/Permission";
 import Company from "../pages/dashboard/Company";
+import SettingUser from "../pages/dashboard/SettingUser";
 
 export default function AppRouter() {
   return (
@@ -30,6 +31,7 @@ export default function AppRouter() {
         <Route path="/dashboard/role/*" element={<Role />} />
         <Route path="/dashboard/permission/*" element={<Permission />} />
         <Route path="/dashboard/company/*" element={<Company />} />
+        <Route path="/dashboard/setting-user/*" element={<SettingUser />} />
       </Routes>
     </BrowserRouter>
   );

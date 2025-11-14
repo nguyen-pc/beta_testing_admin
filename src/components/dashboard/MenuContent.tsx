@@ -25,7 +25,7 @@ const mainListItems = [
 ];
 
 const secondaryListItems = [
-  { text: 'Settings', icon: <SettingsRoundedIcon />, path: '/dashboard/settings' },
+  { text: 'Settings', icon: <SettingsRoundedIcon />, path: '/dashboard/setting-user' },
   { text: 'About', icon: <InfoRoundedIcon />, path: '/dashboard/about' },
   { text: 'Feedback', icon: <HelpRoundedIcon />, path: '/dashboard/feedback' },
 ];
