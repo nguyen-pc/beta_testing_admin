@@ -584,3 +584,20 @@ export async function callChangeUserPassword(data: any) {
   console.log("callChangeUserPassword", { data });
   return axios.put<IBackendRes<any>>(`/api/v1/users/change-password`, data);
 }
+
+// reward
+// Lấy danh sách tất cả reward batch cho admin
+export const callAdminGetRewardBatches = () => {
+  return axios.get<IBackendRes<any>>("/api/v1/admin/reward-batches");
+};
+
+// Finalize 1 batch
+export const callAdminFinalizeRewardBatch = (batchId: string | number) => {
+  return axios.post<IBackendRes<any>>(
+    `/api/v1/admin/reward-batches/${batchId}/finalize`
+  );
+};
+
+export async function callGetRewardEvidence(batchId: string | number) {
+  return axios.get<IBackendRes<any>>(`/api/v1/reward-evidence/${batchId}`);
+}
