@@ -205,7 +205,7 @@ const RewardManagement: React.FC = () => {
   // ==========================================================
   return (
     <Box p={3}>
-      <Typography variant="h5" fontWeight={600} mb={2}>
+      <Typography variant="h4" fontWeight={600} mb={2}>
         Admin – Reward Batch Management
       </Typography>
 

@@ -10,7 +10,7 @@ export default function UserSettingsPage() {
 
   return (
     <Box className="p-6 w-full">
-      <Typography variant="h5" fontWeight={700} mb={3}>
+      <Typography variant="h4" fontWeight={700} mb={3}>
         User Settings
       </Typography>
 

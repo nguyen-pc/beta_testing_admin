@@ -6,6 +6,7 @@ import {
   MenuItem,
   FormControlLabel,
   Checkbox,
+  Typography,
 } from "@mui/material";
 import { Formik, useFormikContext } from "formik";
 import * as yup from "yup";
@@ -150,7 +151,7 @@ const AddRole = () => {
   return (
     <Box m="20px">
       {/* <Header title="THÊM VAI TRÒ" subtitle="Tạo thông tin vai trò mới" /> */}
-
+      <Typography sx={{mb:4}} variant="h4">Thêm vai trò</Typography>
       <Formik
         enableReinitialize
         initialValues={initialValues}

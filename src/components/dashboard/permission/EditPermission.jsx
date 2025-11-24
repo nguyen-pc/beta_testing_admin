@@ -1,4 +1,4 @@
-import { Box, Button, TextField, MenuItem } from "@mui/material";
+import { Box, Button, TextField, MenuItem, Typography } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -103,7 +103,6 @@ const EditPermission = () => {
       }
     } catch (error) {
       console.error("Error updating permission:", error);
-     
     }
   };
 
@@ -113,6 +112,9 @@ const EditPermission = () => {
         title="CHỈNH SỬA PERMISSION (QUYỀN HẠN)"
         subtitle="Cập nhật thông tin permission"
       /> */}
+      <Typography sx={{ mb: 4 }} variant="h4">
+        Chỉnh sửa permission
+      </Typography>
       <Formik
         enableReinitialize
         initialValues={formInitialValues}

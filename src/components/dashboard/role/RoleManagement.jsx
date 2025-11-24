@@ -186,7 +186,7 @@ const RoleManagement = () => {
         alignItems="center"
         mb={2}
       >
-        <Typography variant="h4">Danh sách Permission</Typography>
+        <Typography variant="h4">Danh sách vai trò</Typography>
         <Button
           variant="contained"
           color="secondary"

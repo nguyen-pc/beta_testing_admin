@@ -1,4 +1,4 @@
-import { Box, Button, TextField, MenuItem } from "@mui/material";
+import { Box, Button, TextField, MenuItem, Typography } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -74,6 +74,7 @@ const FormUserAdd = () => {
         title="TẠO NGƯỜI DÙNG"
         subtitle="Thêm người dùng mới vào hệ thống"
       /> */}
+      <Typography sx={{mb:4}} variant="h4">Tạo người dùng</Typography>
 
       <Formik
         onSubmit={handleFormSubmit}

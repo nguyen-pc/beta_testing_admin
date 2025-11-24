@@ -15,7 +15,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { callGetAllCampaigns } from "../../../config/api";
 
-// 🎨 Styled components
+//  Styled components
 const StyledCard = styled(Card)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -52,7 +52,7 @@ const StyledTypography = styled(Typography)({
   textOverflow: "ellipsis",
 });
 
-// 👤 Author Component
+//  Author Component
 function Author({ name, date }: { name: string; date?: string }) {
   return (
     <Box
@@ -87,13 +87,13 @@ function Author({ name, date }: { name: string; date?: string }) {
   );
 }
 
-// 💡 Main Component
+//  Main Component
 export default function AllCampaignList() {
   const [campaigns, setCampaigns] = useState<any[]>([]);
   const [statusFilter, setStatusFilter] = useState<string>("");
   const navigate = useNavigate();
 
-  // 📦 Gọi API lấy tất cả campaign (có lọc)
+  //  Gọi API lấy tất cả campaign (có lọc)
   const fetchCampaigns = async () => {
     try {
       const query = `page=0&size=20${
@@ -101,9 +101,9 @@ export default function AllCampaignList() {
       }`;
       const res = await callGetAllCampaigns(query);
       setCampaigns(res.data.result || []);
-      console.log("✅ All campaigns fetched:", res.data.result);
+      console.log("All campaigns fetched:", res.data.result);
     } catch (err) {
-      console.error("❌ Error fetching campaigns:", err);
+      console.error(" Error fetching campaigns:", err);
     }
   };
 
@@ -118,8 +118,8 @@ export default function AllCampaignList() {
   return (
     <Container maxWidth="lg" sx={{ py: 5 }}>
       <Box>
-        <Typography variant="h5" component="h2" sx={{ mb: 3 }}>
-          All Campaigns
+        <Typography variant="h4" component="h2" sx={{ mb: 3 }}>
+           Campaigns
         </Typography>
 
         {/* Bộ lọc trạng thái */}

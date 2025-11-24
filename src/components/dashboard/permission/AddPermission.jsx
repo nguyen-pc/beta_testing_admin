@@ -1,4 +1,4 @@
-import { Box, Button, TextField, MenuItem } from "@mui/material";
+import { Box, Button, TextField, MenuItem, Typography } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -53,11 +53,11 @@ const AddPermission = () => {
       method: values.method,
       module: values.module,
     };
-    
+
     console.log("Payload to create permission:", payload);
     const res = await callCreatePermission(payload);
     if (res.data) {
-    //   message.success("Thêm mới permission thành công");
+      //   message.success("Thêm mới permission thành công");
       resetForm();
     } else {
       console.log("Create permission response:", res);
@@ -70,6 +70,9 @@ const AddPermission = () => {
         title="THÊM PERMISSION (QUYỀN HẠN)"
         subtitle="Tạo thông tin permission mới"
       /> */}
+      <Typography sx={{ mb: 4 }} variant="h4">
+        Thêm permission
+      </Typography>
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}

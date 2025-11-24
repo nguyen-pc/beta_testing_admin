@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, useTheme } from "@mui/material";
+import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 // import Header from "../../../components/admin/Header";
@@ -98,7 +98,7 @@ const UserManagement = () => {
         const q = buildQuery({ current: 1, pageSize: 11 }, {}, {});
         dispatch(fetchUser({ query: q }));
       } else {
-       console.error("Xóa User thất bại:", res.message);
+        console.error("Xóa User thất bại:", res.message);
       }
     }
   };
@@ -179,6 +179,7 @@ const UserManagement = () => {
         title="QUẢN LÝ NGƯỜI DÙNG"
         subtitle="Danh sách người dùng hệ thống"
       /> */}
+      <Typography variant="h4">Danh sách người dùng</Typography>
       <Box display="flex" justifyContent="flex-end" mb={2}>
         <Button
           variant="contained"

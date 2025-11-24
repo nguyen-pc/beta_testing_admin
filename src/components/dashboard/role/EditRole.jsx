@@ -5,6 +5,7 @@ import {
   TextField,
   MenuItem,
   FormControlLabel,
+  Typography,
 } from "@mui/material";
 import { Formik, useFormikContext } from "formik";
 import * as yup from "yup";
@@ -162,6 +163,7 @@ const EditRole = () => {
   return (
     <Box m="20px">
       {/* <Header title="CHỈNH SỬA VAI TRÒ" subtitle="Cập nhật thông tin vai trò" /> */}
+      <Typography sx={{mb:4}} variant="h4">Chỉnh sửa vai trò</Typography>
       <Formik
         enableReinitialize
         initialValues={initialValues}
