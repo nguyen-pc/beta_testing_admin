@@ -62,7 +62,7 @@ const RewardEvidenceViewDialog: React.FC<Props> = ({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                📄 Open PDF Evidence
+                 Open PDF Evidence
               </a>
             ) : (
               <img
