@@ -478,9 +478,9 @@ export async function callCheckLinkSafety(url: string) {
 }
 export async function callScanDownloadFile(fileUrl: string) {
   console.log("callScanDownloadFile", fileUrl);
-  return axios.post<IBackendRes<any>>(`/api/v1/censor/scan-download`, {
+  return axios.post<IBackendRes<any>>(`/api/v1/censor/scan-download`, null, {
     params: { url: fileUrl },
-  });
+  }); 
 }
 
 export async function callGetProjectByCampaign(campaignId: string) {

@@ -137,7 +137,7 @@ const LinkSafetyChecker: React.FC<LinkSafetyCheckerProps> = ({
                   <Box mt={2}>
                     {result.status === "ERROR" && (
                       <Alert severity="error">
-                        ❌ Lỗi: {result.error || "Không thể kiểm tra link này!"}
+                        Lỗi: {result.error || "Không thể kiểm tra link này!"}
                       </Alert>
                     )}
 
@@ -166,8 +166,8 @@ const LinkSafetyChecker: React.FC<LinkSafetyCheckerProps> = ({
                           }
                         >
                           {result.virusTotal?.stats?.malicious > 0
-                            ? "⚠️ Phát hiện file đáng ngờ hoặc độc hại!"
-                            : "✅ Không phát hiện mã độc — File an toàn."}
+                            ? " Phát hiện file đáng ngờ hoặc độc hại!"
+                            : " Không phát hiện mã độc — File an toàn."}
                         </Alert>
 
                         <Typography variant="body2" sx={{ mt: 1 }}>
